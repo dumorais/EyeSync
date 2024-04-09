@@ -1,4 +1,6 @@
+import pyperclip as pc
 import speech_recognition as sr
+import pyautogui
 #Funcao responsavel por ouvir e reconhecer a fala
 def ouvir_microfone():
 #Habilita o microfone para ouvir o usuario
@@ -15,6 +17,9 @@ def ouvir_microfone():
         frase = microfone.recognize_google(audio,language='pt-BR')
     #Após alguns segundos, retorna a frase falada
         print("Você disse: " + frase)
+        pc.copy(frase)
+        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.press('enter')
     #Caso nao tenha reconhecido o padrao de fala, exibe esta mensagem
     except sr.UnkownValueError:
         print("Não entendi")
