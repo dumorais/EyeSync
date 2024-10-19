@@ -8,10 +8,8 @@ from gaze_tracking.gaze_tracking import GazeTracking
 import pyautogui 
 gaze = GazeTracking()
 webcam = cv2.VideoCapture(0)
-left_blink_counter = 0
-right_blink_counter = 0
-blink_threshold = 5  # Número de frames que o olho precisa estar fechado para contar como piscada
-blink_detected = False
+#from Speech import StartListen
+
 while True:
     # We get a new frame from the webcam
     _, frame = webcam.read()
@@ -23,7 +21,8 @@ while True:
 
     frame = gaze.annotated_frame()
     text = ""
-
+    #Começar a ouvir o que o usuário fala
+    #StartListen()
 
     if gaze.is_blinking():
      #   pyautogui.click(button='left')
@@ -68,18 +67,25 @@ while True:
         right_pupil_x = right_pupil
         left_pupil_y = left_pupil
         right_pupil_y = right_pupil
-       # coordenateX = left_pupil
-        #coordenateY= right_pupil
+        coordenateX = left_pupil
+        coordenateY= right_pupil
 
     if coordenateX is not None and coordenateY is not None:
-        pyautogui.moveTo(xS, yS)
+        frame_height, frame_width, _ = frame.shape  # Pega a altura e largura do frame
+        center_x = int(frame_width - coordenateX)
+        center_y = int(frame_height - coordenateY )
+        cv2.circle(frame, (center_x, center_y), radius=10, color=(0, 255, 0), thickness=2)
+        #pyautogui.moveTo(xS, yS)
 
-
+    '''if right_pupil is None:
+        pyautogui.click(button='left')
+    if left_pupil is None:
+        pyautogui.click(button='right')'''
         
     cv2.putText(frame, "Largura Quadrado:  " + str(right_eye_coords[2] - right_eye_coords[0]), (90, 130), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
     cv2.putText(frame, "Altura Quadrado: " + str(right_eye_coords[3] - right_eye_coords[1]), (90, 165), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
-    cv2.putText(frame, "X do Olho:  " + str(coordenateX), (90, 200), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
-    cv2.putText(frame, "Y do Olho:  " + str(coordenateY), (90, 235), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
+    cv2.putText(frame, "Pupila Esquerda:  " + str(coordenateX), (90, 200), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
+    cv2.putText(frame, "Pupila Direita:  " + str(coordenateY), (90, 235), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
     cv2.putText(frame, "xS:  " + str(xS), (90, 270), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
     cv2.putText(frame, "yS:  " + str(yS), (90, 305), cv2.FONT_HERSHEY_DUPLEX, 0.9, (147, 58, 31), 1)
 

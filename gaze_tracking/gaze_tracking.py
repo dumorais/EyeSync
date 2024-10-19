@@ -38,6 +38,31 @@ class GazeTracking(object):
             return True
         except Exception:
             return False
+        
+    @property
+    def pupils_located_right(self):
+        try:
+         #   int(self.eye_left.pupil.x)
+        #    int(self.eye_left.pupil.y)
+            int(self.eye_right.pupil.x)
+            int(self.eye_right.pupil.y)
+            return True
+        except Exception:
+            return False
+
+
+    @property
+    def pupils_located_left(self):
+        """Check that the pupils have been located"""
+        try:
+            int(self.eye_left.pupil.x)
+            int(self.eye_left.pupil.y)
+          #  int(self.eye_right.pupil.x)
+           # int(self.eye_right.pupil.y)
+            return True
+        except Exception:
+            return False
+
 
     def _analyze(self):
         """Detects the face and initialize Eye objects"""
@@ -64,14 +89,14 @@ class GazeTracking(object):
 
     def pupil_left_coords(self):
         """Returns the coordinates of the left pupil"""
-        if self.pupils_located:
+        if self.pupils_located_left:
             x =  self.eye_left.pupil.x
             y =  self.eye_left.pupil.y
             return (x, y)
 
     def pupil_right_coords(self):
         """Returns the coordinates of the right pupil"""
-        if self.pupils_located:
+        if self.pupils_located_right:
             x =  self.eye_right.pupil.x
             y = self.eye_right.pupil.y
             return (x, y)
@@ -134,9 +159,9 @@ class GazeTracking(object):
             color = (0, 255, 0)
             x_left, y_left = self.pupil_left_coords()
             x_right, y_right = self.pupil_right_coords()
-            cv2.line(frame, (x_left - 2, y_left), (x_left + 2, y_left), color)
-            cv2.line(frame, (x_left, y_left - 2), (x_left, y_left + 2), color)
-            cv2.line(frame, (x_right - 2, y_right), (x_right + 2, y_right), color)
-            cv2.line(frame, (x_right, y_right - 2), (x_right, y_right + 2), color)
+            cv2.line(frame, (x_left - 5, y_left), (x_left + 5, y_left), color)
+            cv2.line(frame, (x_left, y_left - 5), (x_left, y_left + 5), color)
+            cv2.line(frame, (x_right - 5, y_right), (x_right + 5, y_right), color)
+            cv2.line(frame, (x_right, y_right - 5), (x_right, y_right + 5), color)
 
         return frame

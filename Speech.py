@@ -1,27 +1,54 @@
 import pyperclip as pc
 import speech_recognition as sr
 import pyautogui
-#Funcao responsavel por ouvir e reconhecer a fala
+from playsound import playsound
+
 def ouvir_microfone():
-#Habilita o microfone para ouvir o usuario
     microfone = sr.Recognizer()
     with sr.Microphone() as source:
-    #Chama a funcao de reducao de ruido disponivel na speech_recognition
         microfone.adjust_for_ambient_noise(source)
-    #Avisa ao usuario que esta pronto para ouvir
         print("Diga alguma coisa: ")
-    #Armazena a informacao de audio na variavel
         audio = microfone.listen(source)
     try:
-    #Passa o audio para o reconhecedor de padroes do speech_recognition
         frase = microfone.recognize_google(audio,language='pt-BR')
-    #Após alguns segundos, retorna a frase falada
         print("Você disse: " + frase)
         pc.copy(frase)
         pyautogui.hotkey('ctrl', 'v')
       #  pyautogui.press('enter')
-    #Caso nao tenha reconhecido o padrao de fala, exibe esta mensagem
     except sr.UnkownValueError:
         print("Não entendi")
-    return frase
-ouvir_microfone()
+    return 
+
+def switch_to_portuguese():
+    ouvir_microfone()
+
+
+recognizer = sr.Recognizer()
+mic = sr.Microphone()
+
+listening_in_portuguese = False
+
+def StartListen():
+    with mic as source:
+        print("Aguardando a palavra-chave em inglês...")
+        recognizer.adjust_for_ambient_noise(source, duration=2)
+        print("Pronto! Pode falar...")
+
+        while True:
+            audio = recognizer.listen(source)
+            
+            try:
+                speech = recognizer.recognize_google(audio, language="en-US")
+                print(f"Você disse em inglês: {speech}")
+
+                if "icing" in speech or "ITestando pesquisa think" in speech or "eye sync" in speech:
+                    playsound('voz.mp3')
+                    switch_to_portuguese()
+                    listening_in_portuguese = True 
+
+            except sr.UnknownValueError:
+                print("Não entendi o que foi dito.")
+            except sr.RequestError as e:
+                print(f"Erro ao conectar com o serviço de reconhecimento de fala: {e}")
+
+StartListen()
