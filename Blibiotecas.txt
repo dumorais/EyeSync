@@ -1,0 +1,14 @@
+-Instalar CMake https://cmake.org/download/
+-Instalar Visual C++https://visualstudio.microsoft.com/pt-br/visual-cpp-build-tools/
+-Link com passo a passo para o Dlib https://medium.com/analytics-vidhya/how-to-install-dlib-library-for-python-in-windows-10-57348ba1117f
+
+pip install opencv-python
+pip install SpeechRecognition
+pip install pyaudio
+pip install pyautogui
+pip install numPy
+pip install CMake
+pip install setuptools
+pip install Dlib==19.24.2
+pip install playsound==1.2.2
+pip install pyperclip==1.9.0
